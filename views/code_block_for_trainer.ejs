@@ -1,0 +1,44 @@
+<!-- views/code_block.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- ... (existing head content) ... -->
+</head>
+<body>
+    <h1>Code Block: <%= mycode.title %></h1>
+
+    <div id="liveCode">
+        <h2>Live Code Preview</h2>
+        <pre id="liveCodeBody"><%= mycode.body %></pre>
+    </div>
+
+    <div id="itemIdContainer" data-item-id="<%= mycode._id %>"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+<script>
+    const itemId = document.getElementById('itemIdContainer').getAttribute('data-item-id');
+    const isMentor = 1;
+// Connect to the server with code ID as a query parameter
+    const socket = io({ query: { itemId , isMentor } });
+        // Apply changes made by other users
+    socket.on('updateCodeBody', (data) => {
+        console.log('Received updateCodeBody event:', data);
+        if (data.itemId === itemId) {
+            if(data.good_ans == 1){
+                const imageUrl = '/images/good-job.png';  // Assuming this is the relative path from the 'public' directory
+                const bigImageWindow = window.open(imageUrl, '_blank');
+                if (bigImageWindow) {
+                    bigImageWindow.focus();
+                } else {
+                    alert('Popup blocker may be preventing the new window from opening. but good job you did it.');
+                }
+            }else{
+                document.getElementById('liveCodeBody').textContent = data.newBody; 
+            }
+        }
+    });
+</script>
+
+    
+</body>
+</html>
