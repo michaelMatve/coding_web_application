@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketIO = require('socket.io');
 const path = require('path');
+const hljs = require('highlight.js');
 const bodyParser = require('body-parser');
 const { getItemList ,getCodeById } = require('./models/Mydb');
 
@@ -41,6 +42,7 @@ app.get('/code_block/:id',async (req, res) => {
         console.log(itemId);
         // console.log("stam1");
         const mycode = await getCodeById(itemId);
+        mycode.body = hljs.highlight('javascript', mycode.body).value;
         // console.log("stam1");
         // console.log(mycode);
         if(!(itemId in used_codes_id)){
@@ -79,12 +81,14 @@ io.on('connection', (socket) => {
     socket.on('updateCodeBody', (data) => {
         console.log(used_codes_id[itemId]);
         if(data.newBody == used_codes_id[itemId]){
+            data.newBody = hljs.highlight('javascript', data.newBody).value;
             console.log("good one");
             data["good_ans"]=1;
             io.emit('updateCodeBody', data);
 
         } else {
             console.log("bad one");
+            data.newBody = hljs.highlight('javascript', data.newBody).value;
             // Broadcast the update to all connected clients
             io.emit('updateCodeBody', data);
         }

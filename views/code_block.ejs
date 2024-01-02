@@ -2,6 +2,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- ... (existing head content) ... -->
+
+    <!-- Include CodeMirror CSS and JS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.css">
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.62.0/lib/codemirror.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.62.0/mode/javascript/javascript.js"></script>
 </head>
 <body>
     <h1>Code Block: <%= mycode.title %></h1>
@@ -13,23 +19,28 @@
         <!-- No need for a submit button -->
     </form>
 
-    <div id="liveCode">
-        <h2>Live Code Preview</h2>
-        <pre id="liveCodeBody"><%= mycode.body %></pre>
-    </div>
-
     <div id="itemIdContainer" data-item-id="<%= mycode._id %>"></div>
 
     <script src="/socket.io/socket.io.js"></script>
-<script>
-    const itemId = document.getElementById('itemIdContainer').getAttribute('data-item-id');
-    const isMentor = 0;
-// Connect to the server with code ID as a query parameter
-    const socket = io({ query: { itemId, isMentor} });
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@5.62.0/addon/runmode/runmode.js"></script>
+    <script>
+        const itemId = document.getElementById('itemIdContainer').getAttribute('data-item-id');
+        const isMentor = 0;
+
+        // Initialize CodeMirror
+        const codeBody = document.getElementById('codeBody');
+        const liveCodeBody = document.getElementById('liveCodeBody');
+        const codeMirror = CodeMirror.fromTextArea(codeBody, {
+            mode: 'javascript',
+            lineNumbers: true,
+            lineWrapping: true,
+        });
+
+        const socket = io({ query: { itemId, isMentor } });
+
         // Apply changes made by other users
-    socket.on('updateCodeBody', (data) => {
-        console.log('Received updateCodeBody event:', data);
-        if (data.itemId === itemId) {
+        socket.on('updateCodeBody', (data) => {
+            console.log('Received updateCodeBody event:', data);
             if(data.good_ans == 1){
                 const imageUrl = '/images/good-job.png';  // Assuming this is the relative path from the 'public' directory
                 const bigImageWindow = window.open(imageUrl, '_blank');
@@ -38,20 +49,19 @@
                 } else {
                     alert('Popup blocker may be preventing the new window from opening. but good job you did it.');
                 }
-            }else{
-                document.getElementById('liveCodeBody').textContent = data.newBody; 
             }
-        }
-    });
+            if (data.itemId === itemId && data.source !== 'user') {
+                liveCodeBody.innerHTML = ''; // Clear existing content
+                CodeMirror.runMode(data.newBody, 'javascript', liveCodeBody);
+            }
+        });
 
-    // Apply changes made by the current user
-    document.getElementById('codeBody').addEventListener('input', function () {
-        const newBody = document.getElementById('codeBody').value;
-        console.log('Emitting updateCodeBody event:', { itemId: itemId, newBody });
-        socket.emit('updateCodeBody', { itemId: itemId, newBody });
-    });
-</script>
-
-    
+        // Apply changes made by the current user
+        codeMirror.on('change', (instance, changeObj) => {
+            const newBody = instance.getValue();
+            console.log('Emitting updateCodeBody event:', { itemId, newBody, source: 'user' });
+            socket.emit('updateCodeBody', { itemId, newBody, source: 'user' });
+        });
+    </script>
 </body>
 </html>

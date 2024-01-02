@@ -3,14 +3,16 @@
 <html lang="en">
 <head>
     <!-- ... (existing head content) ... -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/atom-one-dark.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
 </head>
 <body>
     <h1>Code Block: <%= mycode.title %></h1>
+    <pre id="liveCodeBody" class="hljs"><code class="javascript"><%= mycode.body %></code></pre>
 
-    <div id="liveCode">
-        <h2>Live Code Preview</h2>
-        <pre id="liveCodeBody"><%= mycode.body %></pre>
-    </div>
+
 
     <div id="itemIdContainer" data-item-id="<%= mycode._id %>"></div>
 
@@ -33,7 +35,7 @@
                     alert('Popup blocker may be preventing the new window from opening. but good job you did it.');
                 }
             }else{
-                document.getElementById('liveCodeBody').textContent = data.newBody; 
+                document.getElementById('liveCodeBody').innerHTML = data.newBody;
             }
         }
     });
