@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-
+// Class definition for the MentorCodeBlock component.
 class MentorCodeBlock extends Component {
     constructor(props) {
         super(props);
@@ -10,6 +10,7 @@ class MentorCodeBlock extends Component {
             "id": props.id,
             "title": '',
             "code": '',
+            "solution": "",
             "isMentor": props.isMentor
         };
     }
@@ -18,7 +19,7 @@ class MentorCodeBlock extends Component {
         this.fetchCodeList();
         this.setupSocket();
     }
-
+    // Asynchronous function to fetch code block details from the server.
     fetchCodeList = async () => {
         try {
             const response = await fetch(`http://localhost:3002/get_code_block/${this.state.id}`);
@@ -26,20 +27,24 @@ class MentorCodeBlock extends Component {
                 throw new Error('Network response was not ok');
             }
 
-            const { title, code } = await response.json();
-            this.setState({ title, code });
+            const { title, code,solution } = await response.json();
+            this.setState({ title, code,solution });
         } catch (error) {
             console.error('Error fetching code list:', error);
         }
     };
-
+    // Function to set up the socket and handle 'updateCodeBody' events.
     setupSocket = () => {
         const { socket } = this.props;
-        console.log("try1");
-        console.log("try2");
+        // console.log("try1");
+        // console.log("try2");
         socket.on('updateCodeBody', (data) => {
             if (data.id === this.state.id) {
                 this.setState({ code: data.newCode });
+            // Checking if the new code matches the solution and displaying an alert.
+            if (data.newCode == this.state.solution) {
+                window.alert('Good job! Your solution is correct.');
+            }
             }
         });
     };
@@ -55,7 +60,7 @@ class MentorCodeBlock extends Component {
     };
 
     render() {
-        const { id, title, code, isMentor } = this.state;
+        const { id, title, code, solution, isMentor } = this.state;
         return (
         <div>
           <div>

@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import ListCodeItem from "./ListCodeItem";
+/*
+  Class definition for CodeList component.
+*/
 class CodeList extends Component {
   constructor(props) {
     super(props);
@@ -13,6 +16,7 @@ class CodeList extends Component {
     this.fetchCodeList();
   }
 
+    // Asynchronous function to fetch code list from the backend API.
   fetchCodeList = async () => {
     try {
       const response = await fetch('http://localhost:3002/getCodeList');
@@ -28,6 +32,7 @@ class CodeList extends Component {
     }
   };
   
+  // Render method displaying the code list as an unordered list.
   render() {
     const { codesList } = this.state;
     return (
