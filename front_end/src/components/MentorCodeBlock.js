@@ -57,12 +57,16 @@ class MentorCodeBlock extends Component {
     render() {
         const { id, title, code, isMentor } = this.state;
         return (
-            <div>
-            <h1>ID: {id}</h1>
-            <div>
-                <h1>{title}</h1>
+        <div>
+          <div>
+                {isMentor === 1 ? (
+                  <h1>Code Page For Mentor</h1>
+                ) : (
+                    <h1>Code Page For Student</h1>
+                )}
+                <h2>the task is : {title}</h2>
                 {/* Use SyntaxHighlighter for syntax highlighting */}
-                <SyntaxHighlighter language="javascript" style={vscDarkPlus}>
+                <SyntaxHighlighter className="code-highlighter" language="javascript" style={vscDarkPlus}>
                     {code}
                 </SyntaxHighlighter>
             </div>

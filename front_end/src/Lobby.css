@@ -1,0 +1,25 @@
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 20px;
+    margin-bottom: 16px;
+    background-color: #a0b4c3; /* Soft blue-gray background for list items */
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+li a {
+    color: #404040; /* Dark gray text color */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+li a:hover {
+    background-color: #879ea9; /* Slightly darker blue-gray on hover */
+    text-decoration: underline;
+}

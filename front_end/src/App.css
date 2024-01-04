@@ -1,0 +1,24 @@
+/* app.css */
+body {
+    background-color: #f4f4f4;  /* Soft blue-gray background */
+    color: #404040; /* Dark gray text color */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1{
+    font-size: 4em;
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 20px;
+    color: #1d354c; 
+}
+
+h2 {
+    font-size: 2em;
+    font-family: 'Roboto', sans-serif;
+    margin-bottom: 10px;
+    color: #1c1c1c; /* Dark gray heading color */
+}

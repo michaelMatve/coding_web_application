@@ -1,0 +1,27 @@
+.code-highlighter {
+    border-radius: 8px;
+    padding: 30px;
+    width: 800px;
+    height: 500px;
+    font-size: 2em;
+    max-height: 500px;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.button-lobby {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 10px;
+    font-size: 1.2em;
+    text-align: center;
+    text-decoration: none;
+    background-color: #a0b4c3; /* Soft blue-gray button background */
+    color: #404040; /* Dark gray button text color */
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.button-lobby:hover {
+    background-color: #879ea9; /* Slightly darker blue-gray on hover */
+}

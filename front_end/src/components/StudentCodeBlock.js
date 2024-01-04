@@ -56,11 +56,14 @@ class StudentCodeBlock extends Component {
         const { id, title, code,isMentor } = this.state;
         return (
             <div>
-                <h1>ID: {id}</h1>
+                {isMentor === 1 ? (
+                  <h1>Code Page For Mentor</h1>
+                ) : (
+                    <h1>Code Page For Student</h1>
+                )}
+                <h2>the task is : {title}</h2>
                 <div>
-                    <h1>{title}</h1>
-                    <h2>{isMentor}</h2>
-                    <Editor height="100vh" width = "100%" theme='vs-dark' defaultLanguage='javascript' value={code} onChange={this.handleBodyChange}/>
+                    <Editor width ="100%" height= "500px" theme='vs-dark' defaultLanguage='javascript' value={code} onChange={this.handleBodyChange}/>
                 </div>
             </div>
         );

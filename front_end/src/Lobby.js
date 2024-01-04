@@ -1,7 +1,6 @@
 import React from 'react';
 import CodeList from "./components/CodeList";
-import './lobby.css';
-
+import "./Lobby.css"
 const Lobby = ()=> {
     return (
       <div>

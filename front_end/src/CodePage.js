@@ -4,6 +4,7 @@ import io from 'socket.io-client';
 import { Link } from 'react-router-dom';
 import StudentCodeBlock from './components/StudentCodeBlock';
 import MentorCodeBlock from './components/MentorCodeBlock';
+import "./CodePage.css"
 
 const CodePage = () => {
     const { id } = useParams();
@@ -42,7 +43,7 @@ const CodePage = () => {
           ) : (
             <StudentCodeBlock id={id} socket={socket} isMentor = {0}/>
           )}
-          <Link to="/">Return to Lobby</Link>
+          <Link className="button-lobby" to="/">Lobby</Link>
 
         </>
       )}
